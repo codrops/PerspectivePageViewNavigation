@@ -44,6 +44,8 @@
 			contentWrapper = container.querySelector( '.wrapper' );
 
 		showMenu.addEventListener( clickevent, function( ev ) {
+			ev.stopPropagation();
+			ev.preventDefault();
 			docscroll = scrollY();
 			// change top of contentWrapper
 			contentWrapper.style.top = docscroll * -1 + 'px';
@@ -61,10 +63,10 @@
 					if( support && ( ev.target.className !== 'container' || ev.propertyName.indexOf( 'transform' ) == -1 ) ) return;
 					this.removeEventListener( transEndEventName, onEndTransFn );
 					classie.remove( perspectiveWrapper, 'modalview' );
-					// change top of contentWrapper
-					contentWrapper.style.top = '0px';
 					// mac chrome issue:
 					document.body.scrollTop = document.documentElement.scrollTop = docscroll;
+					// change top of contentWrapper
+					contentWrapper.style.top = '0px';
 				};
 				if( support ) {
 					perspectiveWrapper.addEventListener( transEndEventName, onEndTransFn );
@@ -75,6 +77,8 @@
 				classie.remove( perspectiveWrapper, 'animate' );
 			}
 		});
+
+		perspectiveWrapper.addEventListener( clickevent, function( ev ) { return false; } );
 	}
 
 	init();
